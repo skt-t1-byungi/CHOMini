@@ -1,0 +1,3 @@
+<?php
+$router->add('/', function () {
+});
