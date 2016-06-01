@@ -24,7 +24,7 @@ abstract class AbstractContainer
         if (method_exists($this, $method)) {
             return $this->_service[$name] = call_user_func([$this, $method]);
         } else {
-            throw new \DomainException("not defined service.");
+            throw new \InvalidArgumentException("Not defined service - " . $name);
         }
     }
 }

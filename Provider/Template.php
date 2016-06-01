@@ -1,5 +1,4 @@
 <?php
-
 namespace Provider;
 
 class Template

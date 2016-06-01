@@ -1,5 +1,4 @@
 <?php
-
 namespace Provider;
 
 /**
@@ -40,7 +39,7 @@ class Router
      * @see $prefix
      * @param string $prefix
      */
-    public function setPrifix($prefix)
+    public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
     }
@@ -95,7 +94,7 @@ class Router
         $method = array_pop($segments);
         $class = $this->prefix . implode('\\', $segments);
 
-        return [new $class, $method];
+        return [new $class($this->container), $method];
     }
 
     /**
@@ -111,7 +110,7 @@ class Router
 
         } else if ($callback instanceof Closure) {
             //클로져일 경우..
-            $controller = new BaseController;
+            $controller = new BaseController($this->container);
             $controller->setContainer($this->container);
 
             $callback = $callback->bindTo($controller, BaseController::class);

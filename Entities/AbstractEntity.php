@@ -95,24 +95,27 @@ abstract class AbstractEntity
      */
     protected function makeUpdateQuery()
     {
-        $query = 'update ' . $tableName . ' set ';
-        foreach ($data as $key => $val) {
-            $query .= $this->_pdo->quote($key) . '=' . $this->_pdo->quote($val);
+        $sets = [];
+        foreach ($this->_data as $key => $val) {
+            $sets[] = $key . '=' . $this->_pdo->quote($val);
         }
-        $query .= ' where ' . $this->primaryKey . '=' . $tdata[$this->primaryKey];
+
+        $query = 'update ' . $this->tableName . ' set ';
+        $query .= implode(',', $sets);
+        $query .= ' where ' . $this->primaryKey . '=' . $this->_data[$this->primaryKey];
 
         return $query;
     }
 
     /**
-     * no operation - overide하여 조인설정을 한다.
+     * no operation - override하여 조인설정을 한다.
      * exmaple :
      * protected function setJoin()
      * {
      *     $this->joinOne('category', 'id', 'parent_id');
      *     $this->joinMany('comments', 'parent_id');
      * }
-     * @example {}
+     * @example here is code.
      */
     protected function setJoin()
     {
@@ -131,10 +134,10 @@ abstract class AbstractEntity
         if (array_key_exists($hasKey, $this->_data)) {
             $keyVal = $this->_data[$hasKey];
         } else {
-            $keyVal = $this->primaryKey;
+            $keyVal = $this->_data[$this->primaryKey];
         }
 
-        $this->_joinEntities[$joinName] = $this->_factory->findOne($joinName, [$joinKey => $hasKey]);
+        $this->_joinEntities[$joinName] = $this->_factory->findOne($joinName, [$joinKey => $keyVal]);
     }
 
     /**
@@ -149,9 +152,9 @@ abstract class AbstractEntity
         if (array_key_exists($hasKey, $this->_data)) {
             $keyVal = $this->_data[$hasKey];
         } else {
-            $keyVal = $this->primaryKey;
+            $keyVal = $this->_data[$this->primaryKey];
         }
 
-        $this->_joinEntities[$joinName] = $this->_factory->find($joinName, [$joinKey => $hasKey]);
+        $this->_joinEntities[$joinName] = $this->_factory->find($joinName, [$joinKey => $keyVal]);
     }
 }
