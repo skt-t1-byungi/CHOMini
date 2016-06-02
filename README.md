@@ -109,7 +109,7 @@ $router->add('/', function () {
 ```html
 <html>
 <head>
-  <title>Ultra - mini</title>
+  <title>CHOMini</title>
 </head>
 <body>
     <?php $this->block('contents')?>
@@ -221,6 +221,9 @@ class Post extends AbstractEntity
 }
 ```
 사실 그냥 컨테이너에 정의된 PDO를 꺼내써도 무방합니다. (더 좋습니다.)
+
+
+
 
 Not Exists Core
 ---
