@@ -29,12 +29,12 @@ $router->add('/bbs/(\w+)/(\d+)', function ($category, $id) {
 ```php
 $router->add('/, 'Controller\main@index');
 ```
-`Controller/main.php`을 작성합니다. 반드시 `Controller\BaseController`을 상속받아야 합니다.
+`Controller/main.php`을 작성합니다. 반드시 `Controller\Base`을 상속받아야 합니다.
 ```php
 <?php
 namespace Controller;
 
-class main extends BaseController
+class main extends Base
 {
     public function index()
     {
@@ -64,7 +64,7 @@ $router->add('/', function () {
 <?php
 namespace Controller;
 
-class main extends BaseController
+class main extends Base
 {
     public function __construct($container)
     {

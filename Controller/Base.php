@@ -4,7 +4,7 @@ namespace Controller;
 
 use Provider\Container;
 
-class BaseController
+class Base
 {
     /**
      * @var Provider\Container

@@ -6,7 +6,7 @@ namespace Provider;
  */
 
 use Closure;
-use Controller\BaseController;
+use Controller\Base as BaseController;
 use Provider\Container;
 
 class Router
