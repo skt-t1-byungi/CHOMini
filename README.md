@@ -1,12 +1,12 @@
-Ultra Mini
+CHOMini
 ===
-Ultra Very Too Cho(超) Simple PHP FrameWork
+Ultra Very Too Cho(超) Mini Simple PHP FrameWork
 
 ## Intro
 지금 내가 하는 일엔 micro 프레임웍조차 필요없다고!
-가장 기본적인 것, 가장 빠른 방법으로...
+> 가장 기본적인 것, 가장 빠른 방법으로...
 
-## Usage
+Usage
 ---
 ### Router
 `route.php`에 URL과 콜백을 등록합니다.
@@ -71,6 +71,24 @@ class main extends BaseController
         $pdo = $container->pdo;
     }
 ````
+컨테이너를 이용하면 복잡한 의존관계를 간편하게 정의할 수 있습니다.
+```php
+    protected function setGrand()
+    {
+        return new Grand;
+    }
+
+    protected function setParent()
+    {
+        return new Parent($this->grand);
+    }
+
+    protected function setChild()
+    {
+        return new Child($this->grand, $this->parent);
+    }
+```
+
 ### View
 PHP는 템플릿엔진이 따로 필요없을 정도로 템플릿 친화적인 숏태그가 이미 존재합니다. 그러나 템플릿 엔진의 상속기능은 너무 탐이 납니다!
 ```php
@@ -163,7 +181,13 @@ $router->add('/', function () {
 `save()`메소드를 사용하면 DB에 업데이트합니다.
 
 #### Delete
-todo...
+```php
+$router->add('/', function () {
+    $post = $this->container->entityFactory->findOne('Post', ['id'=>1]);
+    $post->delete();
+});
+```
+해당 Row를 삭제합니다.
 
 ### Join
 엔티티(테이블로우)끼리 조인과 유사하게 연결관계를 만들고 싶을 때가 있습니다. 클래스에서 `setJoin()`을 통해 연결 엔티티를 생성할 수 있습니다.
@@ -188,4 +212,15 @@ $router->add('/', function () {
 ```
 `joinOne()`은 findOne으로 다른 엔티티를 가져옵니다. `joinMany()`는 find로 가져옵니다.
 2번째인자는 가져올 테이블 컬럼이고 3번째인자는 현재 클래스가 가르키는 테이블의 컬럼입니다. 비었을 경우 기본값인 `$this->primaryKey`(id)로 설정됩니다. primaryKey는 오버라이드하여 변경할 수 있습니다.
+```php
+<?php
+namespace Entities;
+class Post extends AbstractEntity
+{
+    protected $primaryKey = 'no';     //primaryKey을 no 컬럼으로 변경
+}
+```
+사실 그냥 컨테이너에 정의된 PDO를 꺼내써도 무방합니다. (더 좋습니다.)
 
+Not Exists Core
+---

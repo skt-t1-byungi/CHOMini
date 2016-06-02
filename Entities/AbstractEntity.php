@@ -91,6 +91,14 @@ abstract class AbstractEntity
     }
 
     /**
+     * 제거
+     */
+    public function delete()
+    {
+        $this->_pdo->query($this->makeDeleteQuery());
+    }
+
+    /**
      * @return string
      */
     protected function makeUpdateQuery()
@@ -103,6 +111,17 @@ abstract class AbstractEntity
         $query = 'update ' . $this->tableName . ' set ';
         $query .= implode(',', $sets);
         $query .= ' where ' . $this->primaryKey . '=' . $this->_data[$this->primaryKey];
+
+        return $query;
+    }
+
+    /**
+     * @return string
+     */
+    protected function makeDeleteQuery()
+    {
+        $query = 'delete from ' . $this->tableName;
+        $query .= ' where ' . $this->primaryKey . '=' . $this->_pdo->quote($this->_data[$this->primaryKey]);
 
         return $query;
     }
