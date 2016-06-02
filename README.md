@@ -224,3 +224,4 @@ class Post extends AbstractEntity
 
 Not Exists Core
 ---
+CHOMini에 건들일 수 없는 Core파일은 없습니다. 어차피 다 합쳐도 몇 줄 안되거든요.
