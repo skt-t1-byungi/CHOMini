@@ -9,7 +9,7 @@ use Provider\Template;
 class Container extends AbstractContainer
 {
     /**
-     * @return League\Plates\Engine
+     * @return Provider\Template
      */
     protected function setView()
     {
