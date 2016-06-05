@@ -34,11 +34,11 @@ class EntityFactory
      * @param  array  $where
      * @return object[]
      */
-    public function find($name, $where = [])
+    public function find($name, $where = [], $prepend = '')
     {
         list($tableName, $className) = $this->getNamesOfTableAndEntity($name);
 
-        $query = $this->makeSelectQuery($tableName, $where);
+        $query = $this->makeSelectQuery($tableName, $where) . ' ' . $prepend;
         $result = $this->pdo->query($query);
         $result->setFetchMode(PDO::FETCH_CLASS, $className, [$this, $this->pdo, $tableName]);
 
