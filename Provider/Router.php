@@ -103,7 +103,7 @@ class Router
      */
     private function getUrl()
     {
-        $index = $_SERVER['DOCUMENT_URI'];
+        $index = isset($_SERVER['DOCUMENT_URI']) ? $_SERVER['DOCUMENT_URI'] : '';
         $full  = $_SERVER['REQUEST_URI'];
         $base  = $this->baseUrl ? $this->baseUrl : preg_replace('/\/public\/index\\.php$/', '', $index);
 
