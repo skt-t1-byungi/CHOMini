@@ -30,6 +30,11 @@ class Router
      */
     protected $prefix = '';
 
+    /**
+     * @var string
+     */
+    protected $baseUrl;
+
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -38,10 +43,22 @@ class Router
     /**
      * @see $prefix
      * @param string $prefix
+     * @return self
      */
     public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
+        return $this;
+    }
+
+    /**
+     * baseUrl을 지정한다. 라우트 때 참고한다.
+     * @param string $baseUrl
+     */
+    public function setBaseUrl($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+        return $this;
     }
 
     /**
@@ -51,7 +68,7 @@ class Router
      */
     public function add($pattern, $callback)
     {
-        $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
+        $pattern                = '/^' . str_replace('/', '\/', $pattern) . '$/';
         $this->routes[$pattern] = $callback;
     }
 
@@ -61,8 +78,7 @@ class Router
      */
     public function run()
     {
-        $url = $_SERVER['REQUEST_URI'];
-
+        $url = $this->getUrl();
         foreach ($this->routes as $pattern => $callback) {
 
             if (preg_match($pattern, $url, $params)) {
@@ -82,6 +98,19 @@ class Router
     }
 
     /**
+     * 현재 url 반환. baseUrl만큼은 뺀다.
+     * @return string
+     */
+    private function getUrl()
+    {
+        $index = $_SERVER['DOCUMENT_URI'];
+        $full  = $_SERVER['REQUEST_URI'];
+        $base  = $this->baseUrl ? $this->baseUrl : preg_replace('/\/public\/index\\.php$/', '', $index);
+
+        return mb_substr($full, mb_strlen($base));
+    }
+
+    /**
      * 문자를 해석해 callable로 반환한다
      * @example stringToCallable("\Controller\Test@index") => [new \Controller\Test(), 'index']
      * @param  string $str
@@ -92,7 +121,7 @@ class Router
         $segments = explode(static::METHOD_DELIMITER, $str);
 
         $method = array_pop($segments);
-        $class = $this->prefix . implode('\\', $segments);
+        $class  = $this->prefix . implode('\\', $segments);
 
         return [new $class($this->container), $method];
     }
