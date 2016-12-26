@@ -41,7 +41,6 @@ class Router
     }
 
     /**
-     * @see $prefix
      * @param string $prefix
      * @return self
      */
@@ -80,7 +79,6 @@ class Router
     {
         $url = $this->getUrl();
         foreach ($this->routes as $pattern => $callback) {
-
             if (preg_match($pattern, $url, $params)) {
                 array_shift($params);
 
@@ -136,8 +134,7 @@ class Router
         if (is_array($callback)) {
             //array type
             $callback[0]->setContainer($this->container);
-
-        } else if ($callback instanceof Closure) {
+        } elseif ($callback instanceof Closure) {
             //클로져일 경우..
             $controller = new BaseController($this->container);
             $controller->setContainer($this->container);
